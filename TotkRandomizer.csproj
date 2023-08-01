@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <TargetFramework>net7.0</TargetFramework>
+    <EnableWindowsTargeting>false</EnableWindowsTargeting>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
+    <UseWindowsForms>false</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>TotkRandomizer.Program</StartupObject>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,40 +16,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
     <PackageReference Include="ZstdSharp.Port" Version="0.7.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Cead">
-      <HintPath>Cead.dll</HintPath>
-    </Reference>
-    <Reference Include="CsRestbl">
-      <HintPath>CsRestbl.dll</HintPath>
-    </Reference>
-    <Reference Include="Native.IO">
-      <HintPath>Native.IO.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="../Cead/src/Cead.csproj" />
+    <ProjectReference Include="../cs-restbl/src/CsRestbl/CsRestbl.csproj" />
+    <ProjectReference Include="../cs-restbl/lib/Native.IO/src/Native.IO.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Cead.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="CsRestbl.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-	    <None Update="Native.IO.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Events\DefeatGanondorf.110.bfevfl.zs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -71,6 +48,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bin\Debug\net7.0\" />
   </ItemGroup>
 
 </Project>
