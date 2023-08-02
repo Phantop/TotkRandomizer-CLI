@@ -3,29 +3,23 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-    <EnableWindowsTargeting>false</EnableWindowsTargeting>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>false</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <StartupObject>TotkRandomizer.Program</StartupObject>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="ZstdSharp.Port" Version="0.7.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="../Cead/src/Cead.csproj" />
     <ProjectReference Include="../cs-restbl/src/CsRestbl/CsRestbl.csproj" />
-    <ProjectReference Include="../cs-restbl/lib/Native.IO/src/Native.IO.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="cs_restbl.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="native_io.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Events\DefeatGanondorf.110.bfevfl.zs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -44,14 +38,5 @@
     <None Update="Events\OpeningEvent.bfevfl.zs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="bin\Debug\net7.0\" />
-  </ItemGroup>
-
 </Project>

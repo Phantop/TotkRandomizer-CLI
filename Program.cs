@@ -427,7 +427,6 @@ namespace TotkRandomizer
             string[] allFiles = Directory.GetFiles(mapfilesPath, "*.bcett.byml.zs", SearchOption.AllDirectories);
             foreach (string mapFile in allFiles)
             {
-                Console.WriteLine(mapFile);
                 Span<byte> myByteArray = HashTable.DecompressMapData(File.ReadAllBytes(mapFile));
                 Byml byaml = Byml.FromBinary(myByteArray);
 
@@ -453,6 +452,7 @@ namespace TotkRandomizer
                 byte[] fs1Array = byaml.ToBinary(false, 7).ToArray();
 
                 string rstbPath = Path.GetDirectoryName(mapFile).Replace(randomizerPath, "").Replace("romfs\\", "").Replace("\\", "/")[1..] + "/" + Path.GetFileNameWithoutExtension(mapFile);
+                Console.WriteLine(rstbPath);
                 rstbModifiedTable.Add(rstbPath, (uint)(fs1Array.Length + 20000));
 
                 File.WriteAllBytes(mapFile, HashTable.CompressMapData(fs1Array));
@@ -464,10 +464,12 @@ namespace TotkRandomizer
             //rstbModifiedTable.Add("Event/EventFlow/DefeatGanondorf.bfevfl", 200000);
 
             //RSTB Table
+            Console.WriteLine(rstbFile);
             Restbl rstbFileData = Restbl.FromBinary(HashTable.DecompressFile(File.ReadAllBytes(rstbFile)));
 
             for (int i = 0; i < rstbModifiedTable.Keys.Count; i++)
             {
+            Console.WriteLine(rstbModifiedTable.Keys.ElementAt(i));
                 rstbFileData.NameTable[rstbModifiedTable.Keys.ElementAt(i)] = rstbModifiedTable.Values.ElementAt(i);
             }
 
