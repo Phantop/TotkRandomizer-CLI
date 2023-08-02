@@ -2,7 +2,6 @@ using Cead;
 using Cead.Interop;
 using CsRestbl;
 using Native.IO.Services;
-using Ookii.Dialogs.WinForms;
 using System.ComponentModel;
 using System.Media;
 using TotkRSTB;
@@ -16,13 +15,12 @@ namespace TotkRandomizer
         {
             DllManager.LoadCead();
 
-            NativeLibraryManager.RegisterAssembly(typeof(Application).Assembly, out bool isCommonLoaded).Register(new RestblLibrary(), out bool isRestblLoaded);
 
             InitializeComponent();
         }
 
         private int currentProgress = 0;
-        private static int maxProgress = 0;
+        public static int maxProgress = 0;
 
         private int currentChest = 0;
         private int chestCount = 1531;
@@ -416,7 +414,7 @@ namespace TotkRandomizer
 
             foreach (string mapFilePath in mapFiles)
             {
-                romfsEnd = mapFilePath.Replace(textBox1.Text, "").Remove(0, 1);
+                romfsEnd = mapFilePath.Replace(textBox1.Text, "");
                 finalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "romfs", romfsEnd);
                 Directory.CreateDirectory(finalPath);
                 CopyFilesRecursively(mapFilePath, finalPath);
@@ -425,7 +423,7 @@ namespace TotkRandomizer
             rstbModifiedTable.Clear();
 
             string resourceFolderPath = Path.Combine(textBox1.Text, "System", "Resource");
-            romfsEnd = resourceFolderPath.Replace(textBox1.Text, "").Remove(0, 1);
+            romfsEnd = resourceFolderPath.Replace(textBox1.Text, "");
             finalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "romfs", romfsEnd);
             Directory.CreateDirectory(finalPath);
             CopyFilesRecursively(resourceFolderPath, finalPath);
