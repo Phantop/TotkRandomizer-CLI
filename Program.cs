@@ -13,10 +13,14 @@ namespace TotkRandomizer
     {
         static void Main(string[] args)
         {
+            if (args.Length <= 0) {
+                Console.WriteLine("Please provide your TotK romfs path.");
+                return;
+            }
+
             DllManager.LoadCead();
 
-            //NativeLibraryManager.RegisterAssembly(typeof(Application).Assembly, out bool isCommonLoaded).Register(new RestblLibrary(), out bool isRestblLoaded);
-
+            currentProgress = 0;
             maxProgress = 0;
 
             HashTable.InitHashTable(Path.Combine(args[0], "Pack", "ZsDic.pack.zs"));
@@ -24,6 +28,7 @@ namespace TotkRandomizer
             doRando(args[0]);
         }
 
+        private static int currentProgress = 0;
         private static int maxProgress = 0;
 
         private static int currentChest = 0;
@@ -452,24 +457,23 @@ namespace TotkRandomizer
                 byte[] fs1Array = byaml.ToBinary(false, 7).ToArray();
 
                 string rstbPath = Path.GetDirectoryName(mapFile).Replace(randomizerPath, "").Replace("romfs\\", "").Replace("\\", "/")[1..] + "/" + Path.GetFileNameWithoutExtension(mapFile);
-                Console.WriteLine(rstbPath);
                 rstbModifiedTable.Add(rstbPath, (uint)(fs1Array.Length + 20000));
 
                 File.WriteAllBytes(mapFile, HashTable.CompressMapData(fs1Array));
+                
+                currentProgress++;
 
-                Console.WriteLine(currentChest);
+                Console.WriteLine(currentProgress + "/" + maxProgress);
             }
 
             //rstbModifiedTable.Add("Event/EventFlow/DefeatGanondorf.110.bfevfl", 200000);
             //rstbModifiedTable.Add("Event/EventFlow/DefeatGanondorf.bfevfl", 200000);
 
             //RSTB Table
-            Console.WriteLine(rstbFile);
             Restbl rstbFileData = Restbl.FromBinary(HashTable.DecompressFile(File.ReadAllBytes(rstbFile)));
 
             for (int i = 0; i < rstbModifiedTable.Keys.Count; i++)
             {
-            Console.WriteLine(rstbModifiedTable.Keys.ElementAt(i));
                 rstbFileData.NameTable[rstbModifiedTable.Keys.ElementAt(i)] = rstbModifiedTable.Values.ElementAt(i);
             }
 
