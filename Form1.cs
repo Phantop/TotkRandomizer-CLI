@@ -1,3 +1,4 @@
+using BfevLibrary;
 using Cead;
 using Cead.Interop;
 using CsRestbl;
@@ -23,7 +24,8 @@ namespace TotkRandomizer
         public static int maxProgress = 0;
 
         private int currentChest = 0;
-        private int chestCount = 1531;
+
+        private List<List<string>> allChestContents = new List<List<string>>();
 
         private static Dictionary<string, uint> rstbModifiedTable = new Dictionary<string, uint>();
 
@@ -227,7 +229,7 @@ namespace TotkRandomizer
                             return actor;
                         }
 
-                        actor.GetHash()["Dynamic"].GetHash()["Drop__DropActor"] = ChestList.ChestNumberList[currentChest];
+                        actor.GetHash()["Dynamic"].GetHash()["Drop__DropActor"] = allChestContents[currentChest][0];
 
                         string newDropActor = actor.GetHash()["Dynamic"].GetHash()["Drop__DropActor"].GetString();
                         if (newDropActor.StartsWith("Weapon_") && !newDropActor.Contains("_Bow_"))
@@ -393,9 +395,6 @@ namespace TotkRandomizer
             string smallDungeonPath = Path.Combine(textBox1.Text, "Banc", "SmallDungeon");
 
             currentChest = 0;
-            ChestList.InitChestNumberList(chestCount);
-
-            RandomizeCutscenes();
 
             string[] mapFiles = new string[] {
                 mainFieldPath,
@@ -434,6 +433,57 @@ namespace TotkRandomizer
             rstbFile = Directory.GetFiles(rstbFile, "*.rsizetable.zs")[0];
 
             string[] allFiles = Directory.GetFiles(mapfilesPath, "*.bcett.byml.zs", SearchOption.AllDirectories);
+
+            allChestContents.Clear();
+
+            // Create New Event Files
+            string eventfilesPath = Path.Combine(textBox1.Text, "Event", "EventFlow");
+            string[] allEventFiles = Directory.GetFiles(eventfilesPath, "*.bfevfl.zs", SearchOption.AllDirectories);
+            List<string> allEventNames = CreateLatestEventNames(allEventFiles);
+            string eventFlowFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "romfs", "Event", "EventFlow");
+            Directory.CreateDirectory(eventFlowFolder);
+
+            foreach (string eventFile in allEventNames)
+            {
+                string eventName = Path.GetFileNameWithoutExtension(eventFile).Split(".")[0];
+
+                if (eventName == "OpeningEvent")
+                {
+                    string finalEventFlowPath = Path.Combine(eventFlowFolder, Path.GetFileName(eventFile));
+                    File.Copy(eventFile, finalEventFlowPath, true);
+                    byte[] modifiedData = TotkRandomizer.Events.EditOpeningEvent(finalEventFlowPath);
+                    rstbModifiedTable.Add($"Event/EventFlow/{Path.GetFileNameWithoutExtension(eventFile).Replace(".zs", "")}", (uint)modifiedData.Length + 20000);
+                }
+            }
+
+            // Get Item Table from Map Files
+            foreach (string mapFile in allFiles)
+            {
+                Span<byte> myByteArray = HashTable.DecompressMapData(File.ReadAllBytes(mapFile));
+                Byml byaml = Byml.FromBinary(myByteArray);
+
+                // For every object in the map, randomize it!
+                Byml.Hash byamlFileArray = byaml.GetHash();
+
+                if (byamlFileArray.ContainsKey("Actors"))
+                {
+                    Byml.Array actorList = byamlFileArray["Actors"].GetArray();
+
+                    for (int i = 0; i < actorList.Length; i++)
+                    {
+                        List<string> chestContents = GetChestContent(actorList[i]);
+
+                        if (chestContents.Count > 0)
+                        {
+                            allChestContents.Add(chestContents);
+                        }
+                    }
+                }
+            }
+
+            allChestContents.Shuffle();
+
+            // Randomize Map Files
             foreach (string mapFile in allFiles)
             {
                 Span<byte> myByteArray = HashTable.DecompressMapData(File.ReadAllBytes(mapFile));
@@ -471,9 +521,6 @@ namespace TotkRandomizer
                 Console.WriteLine(currentChest);
             }
 
-            //rstbModifiedTable.Add("Event/EventFlow/DefeatGanondorf.110.bfevfl", 200000);
-            //rstbModifiedTable.Add("Event/EventFlow/DefeatGanondorf.bfevfl", 200000);
-
             //RSTB Table
             Restbl rstbFileData = Restbl.FromBinary(HashTable.DecompressFile(File.ReadAllBytes(rstbFile)));
 
@@ -486,18 +533,81 @@ namespace TotkRandomizer
             File.WriteAllBytes(rstbFile, compressedRSTB);
         }
 
-        private void RandomizeCutscenes()
+        private List<string> CreateLatestEventNames(string[] allEventFiles)
         {
-            string customEventFlowFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Events");
+            List<string> eventNames = new List<string>();
 
-            string finalPath = Path.Combine(customEventFlowFolder, "..", "romfs", "Event", "EventFlow");
-            Directory.CreateDirectory(finalPath);
-
-            foreach (string cutsceneFile in Directory.GetFiles(customEventFlowFolder, "*.zs"))
+            foreach (string eventFile in allEventFiles)
             {
-                finalPath = Path.Combine(customEventFlowFolder, "..", "romfs", "Event", "EventFlow", Path.GetFileName(cutsceneFile));
-                File.Copy(cutsceneFile, finalPath, true);
+                string eventName = Path.GetFileNameWithoutExtension(eventFile).Split(".")[0];
+
+                if (eventNames.Any(o => Path.GetFileNameWithoutExtension(o).StartsWith(eventName)))
+                {
+                    Dictionary<string, int> sameEvents = new Dictionary<string, int>();
+
+                    foreach (string sameEvent in allEventFiles)
+                    {
+                        if (Path.GetFileNameWithoutExtension(sameEvent).Split(".")[0].StartsWith(eventName))
+                        {
+                            if (Path.GetFileNameWithoutExtension(sameEvent).Split(".").Length > 2)
+                            {
+                                int eventVersion = int.Parse(Path.GetFileNameWithoutExtension(sameEvent).Split(".")[1]);
+                                sameEvents.Add(sameEvent, eventVersion);
+                            }
+                            else
+                            {
+                                sameEvents.Add(sameEvent, 0);
+                            }
+                        }
+                    }
+
+                    Dictionary<string, int> orderedDict = sameEvents.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+                    eventNames.RemoveAll(x => Path.GetFileNameWithoutExtension(x).StartsWith(eventName));
+                    eventNames.Add(orderedDict.Keys.Last());
+                }
+                else
+                {
+                    eventNames.Add(eventFile);
+                }
             }
+
+            return eventNames;
+        }
+
+        private List<string> GetChestContent(Byml actor)
+        {
+            List<string> returnValue = new List<string>();
+
+            string gyamlValue = actor.GetHash()["Gyaml"].GetString();
+
+            if (gyamlValue.StartsWith("TBox_"))
+            {
+                if (actor.GetHash().ContainsKey("Dynamic"))
+                {
+                    Byml.Hash dynamicArray = actor.GetHash()["Dynamic"].GetHash();
+
+                    if (dynamicArray.ContainsKey("Drop__DropActor"))
+                    {
+                        string dropValue = actor.GetHash()["Dynamic"].GetHash()["Drop__DropActor"].GetString();
+
+                        if (dropValue.Equals("KeySmall"))
+                        {
+                            return new List<string>();
+                        }
+
+                        returnValue.Add(dropValue);
+
+                        if (dynamicArray.ContainsKey("Drop__DropActor_Attachment"))
+                        {
+                            string dropValueAttachment = actor.GetHash()["Dynamic"].GetHash()["Drop__DropActor_Attachment"].GetString();
+                            returnValue.Add(dropValueAttachment);
+                        }
+                    }
+                }
+            }
+
+            return returnValue;
         }
 
         private void ProgressChanged(object sender, ProgressChangedEventArgs e)
