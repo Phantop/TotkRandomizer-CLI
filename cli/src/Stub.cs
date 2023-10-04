@@ -14,7 +14,6 @@
     }
     public static class textBox1 {
         public static string Text;
-        public static void setText(string set) { Text = set; }
     }
     public class VistaFolderBrowserDialog {
         public string Description;

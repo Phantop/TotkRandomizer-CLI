@@ -413,7 +413,7 @@ namespace TotkRandomizer
 
             foreach (string mapFilePath in mapFiles)
             {
-                romfsEnd = mapFilePath.Replace(textBox1.Text, "");
+                romfsEnd = mapFilePath.Replace(textBox1.Text, "").Remove(0, 1);
                 finalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "romfs", romfsEnd);
                 Directory.CreateDirectory(finalPath);
                 CopyFilesRecursively(mapFilePath, finalPath);
@@ -422,7 +422,7 @@ namespace TotkRandomizer
             rstbModifiedTable.Clear();
 
             string resourceFolderPath = Path.Combine(textBox1.Text, "System", "Resource");
-            romfsEnd = resourceFolderPath.Replace(textBox1.Text, "");
+            romfsEnd = resourceFolderPath.Replace(textBox1.Text, "").Remove(0, 1);
             finalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "romfs", romfsEnd);
             Directory.CreateDirectory(finalPath);
             CopyFilesRecursively(resourceFolderPath, finalPath);
