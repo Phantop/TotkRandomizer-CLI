@@ -1,5 +1,6 @@
 ﻿namespace TotkRandomizer {
     public class Form {}
+    public class Application {}
     public static class backgroundWorker1 {
         public static string Text;
         public static void RunWorkerAsync() {}
@@ -34,5 +35,11 @@
         public static class Exclamation {
             public static void Play() {}
         }
+    }
+    public class NativeLibraryManager {
+        public static NativeLibraryManager
+            RegisterAssembly(System.Reflection.Assembly a, out bool b)
+            { b = false; return new NativeLibraryManager(); }
+        public void Register(CsRestbl.RestblLibrary a, out bool b) { b = false; }
     }
 }

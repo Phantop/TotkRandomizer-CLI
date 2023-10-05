@@ -15,6 +15,7 @@ namespace TotkRandomizer
         {
             DllManager.LoadCead();
 
+            NativeLibraryManager.RegisterAssembly(typeof(Application).Assembly, out bool isCommonLoaded).Register(new RestblLibrary(), out bool isRestblLoaded);
 
             InitializeComponent();
         }
