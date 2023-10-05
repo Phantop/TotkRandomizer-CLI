@@ -1,0 +1,9 @@
+[submodule "Cead"]
+	path = lib/Cead
+	url = https://github.com/TotkMods/Cead
+[submodule "cs-restbl"]
+	path = lib/cs-restbl
+	url = https://github.com/EPD-Libraries/cs-restbl
+[submodule "TotkRandomizer"]
+	path = lib/TotkRandomizer
+	url = https://github.com/MelonSpeedruns/TotkRandomizer

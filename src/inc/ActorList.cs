@@ -1,0 +1,1 @@
+../../lib/TotkRandomizer/ActorList.cs
