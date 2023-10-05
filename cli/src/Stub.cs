@@ -7,7 +7,7 @@
     }
     public static class button1 { public static bool Enabled; }
     public static class button2 { public static bool Enabled; }
-    public static class DialogResult { public static bool Cancel; }
+    public static class DialogResult { public static bool OK; }
     public static class progressBar1 {
         public static int Maximum;
         public static int Value;
@@ -15,11 +15,12 @@
     public static class textBox1 {
         public static string Text;
     }
-    public class VistaFolderBrowserDialog {
+    public class FolderBrowserDialog {
+        public bool AutoUpgradeEnabled;
+        public bool ShowDialog() { return true; }
+        public bool UseDescriptionForTitle;
         public string Description;
         public string SelectedPath;
-        public bool UseDescriptionForTitle;
-        public bool ShowDialog() { return true; }
     }
     namespace Properties {
         namespace Settings {
