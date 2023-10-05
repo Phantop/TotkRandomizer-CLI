@@ -21,7 +21,7 @@ namespace TotkRandomizer
         }
 
         private int currentProgress = 0;
-        public static int maxProgress = 0;
+        private static int maxProgress = 0;
 
         private int currentChest = 0;
 

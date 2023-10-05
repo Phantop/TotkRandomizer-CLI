@@ -16,5 +16,6 @@ namespace TotkRandomizer {
             button1_Click(null, null);
             backgroundWorker1_DoWork(null, null);
         }
+        public static int getMax() { return maxProgress; }
     }
 }

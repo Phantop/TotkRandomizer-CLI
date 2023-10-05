@@ -4,7 +4,7 @@
     public static class backgroundWorker1 {
         public static string Text;
         public static void RunWorkerAsync() {}
-        public static void ReportProgress(int i) { Console.WriteLine(i + "/" + Form1.maxProgress); }
+        public static void ReportProgress(int i) { Console.WriteLine(i + "/" + Form1.getMax()); }
     }
     public static class button1 { public static bool Enabled; }
     public static class button2 { public static bool Enabled; }
