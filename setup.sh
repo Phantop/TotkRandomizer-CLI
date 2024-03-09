@@ -1,6 +1,6 @@
 #!/bin/sh
 cd "$(dirname "$0")" || exit 1
-git submodule update --recursive
+git submodule update --init --recursive
 for i in lib/Cead lib/cs-restbl lib/cs-restbl/lib/Native.IO; do
     cmake --no-warn-unused-cli \
         -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
@@ -9,5 +9,5 @@ for i in lib/Cead lib/cs-restbl lib/cs-restbl/lib/Native.IO; do
         -B "$i/native/build/linux" \
         -G "Ninja" &&
         cmake --build "$i/native/build/linux" --config Release --target all -j
-        cp "$i/native/build/linux/*.so" src/
+        cp "$i/native/build/linux/"*.so src/
 done
