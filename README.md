@@ -5,8 +5,8 @@ to a commandline utility that can run on Linux with no changes to the original s
 
 To run:
 ```sh
-setup.sh
+./setup.sh
 cd src
 dotnet run -c Release <path/to/romfs>
 ```
-* romfs path must not end in a `/`
+\* romfs path must not end in a `/`
