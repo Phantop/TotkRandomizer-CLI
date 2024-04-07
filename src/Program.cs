@@ -15,11 +15,7 @@ namespace TotkRandomizer {
         public bool AutoUpgradeEnabled, UseDescriptionForTitle;
         public bool ShowDialog() { return true; }
         public string Description, SelectedPath; }
-    public class NLM {
-        public static NLM RegisterAssembly(Object a, out bool b) { b = true; return new NLM(); }
-        public void Register(Object a, out bool b) { b = false; } }
     public class Form{}
-    public class NativeLibraryManager : NLM{};
     public static class DialogResult { public static bool OK; }
     public static class button1 { public static bool Enabled; }
     public static class button2 { public static bool Enabled; }

@@ -1,1 +1,1 @@
-../../lib/TotkRandomizer/ActorList.cs
+../../TotkRandomizer/ActorList.cs

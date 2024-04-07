@@ -13,15 +13,13 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x' # SDK Version to use.
-      - name: Prepare dependencies
-        run: |
-          sudo apt install -y ninja-build
-          ./setup.sh
       - name: Create the package
-        run: dotnet publish -c Release src
+        run: |
+          git submodule update --init
+          dotnet publish -c Release src
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: TotkRandomizer
           path: |
-            src/bin/Release/net7.0/linux-x64/publish/TotkRandomizer
+            src/bin/Release/net8.0/linux-x64/publish/TotkRandomizer

@@ -1,1 +1,1 @@
-../../lib/TotkRandomizer/Events.cs
+../../TotkRandomizer/Events.cs

@@ -1,1 +1,1 @@
-../../lib/TotkRandomizer/Form1.cs
+../../TotkRandomizer/Form1.cs

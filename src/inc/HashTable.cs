@@ -1,1 +1,1 @@
-../../lib/TotkRandomizer/HashTable.cs
+../../TotkRandomizer/HashTable.cs

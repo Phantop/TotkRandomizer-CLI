@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
@@ -11,19 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BfevLibrary" Version="0.11.3" />
+    <PackageReference Include="BfevLibrary" Version="0.11.7" />
+    <PackageReference Include="BymlLibrary" Version="2.1.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ZstdSharp.Port" Version="0.7.2" />
-    <ProjectReference Include="../lib/Cead/src/Cead.csproj" />
-    <ProjectReference Include="../lib/cs-restbl/src/CsRestbl/CsRestbl.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="cs_restbl.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="native_io.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <PackageReference Include="RstbLibrary" Version="1.0.2" />
+    <PackageReference Include="SarcLibrary" Version="3.1.2" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    <PackageReference Include="ZstdSharp.Port" Version="0.7.6" />
   </ItemGroup>
 </Project>
