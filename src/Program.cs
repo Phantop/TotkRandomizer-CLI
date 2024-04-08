@@ -7,7 +7,14 @@ namespace TotkRandomizer {
     public partial class Form1 : Form {
         private void InitializeComponent() {
             button1_Click(null, null); backgroundWorker1_DoWork(null, null); }
-        public static int getMax() { return maxProgress; } }
+        public static int getMax() { return maxProgress; }
+        private Checkbox randomizeChests = new Checkbox();
+        private Checkbox randomizeEnemies = new Checkbox();
+        private Checkbox randomizeNature = new Checkbox();
+        private Checkbox randomizeParagliderFabric = new Checkbox();
+        private Checkbox randomizeWeapons = new Checkbox();
+    }
+    public class Checkbox { public bool Checked = true; }
     public static class backgroundWorker1 {
         public static void RunWorkerAsync(){}
         public static void ReportProgress(int i) { Console.WriteLine(i + "/" + Form1.getMax()); } }
