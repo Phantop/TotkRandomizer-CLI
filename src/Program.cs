@@ -7,14 +7,17 @@ namespace TotkRandomizer {
     public partial class Form1 : Form {
         private void InitializeComponent() {
             button1_Click(null, null); backgroundWorker1_DoWork(null, null); }
-        public static int getMax() { return maxProgress; }
-        private Checkbox randomizeChests = new Checkbox();
-        private Checkbox randomizeEnemies = new Checkbox();
-        private Checkbox randomizeNature = new Checkbox();
-        private Checkbox randomizeParagliderFabric = new Checkbox();
-        private Checkbox randomizeWeapons = new Checkbox();
-    }
-    public class Checkbox { public bool Checked = true; }
+        public static ComboBox enemiesBox = new ComboBox();
+        public static ComboBox chestsBox = new ComboBox();
+        public static ComboBox weaponsBox = new ComboBox();
+        public static ComboBox natureBox = new ComboBox();
+        public static ComboBox paragliderPatternBox = new ComboBox();
+        public static int getMax() { return maxProgress; } }
+    public class ComboBox {
+        public bool InvokeRequired = false;
+        public int SelectedIndex = 1;
+        public void Invoke(object i){} }
+    public delegate void MethodInvoker();
     public static class backgroundWorker1 {
         public static void RunWorkerAsync(){}
         public static void ReportProgress(int i) { Console.WriteLine(i + "/" + Form1.getMax()); } }
@@ -26,6 +29,7 @@ namespace TotkRandomizer {
     public static class DialogResult { public static bool OK; }
     public static class button1 { public static bool Enabled; }
     public static class button2 { public static bool Enabled; }
+    public static class tabControl1 { public static bool Enabled; }
     public static class progressBar1 { public static int Maximum, Value; }
     public static class textBox1 { public static string Text; }
     namespace SystemSounds {
